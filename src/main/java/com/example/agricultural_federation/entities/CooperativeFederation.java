@@ -15,6 +15,6 @@ import java.util.List;
 public class CooperativeFederation {
     private String id;
     private String name;
-    private List<CooperativeFederation> cooperativeFederations;
+    private List<Cooperative> cooperatives;
 }
 
