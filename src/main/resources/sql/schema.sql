@@ -30,3 +30,10 @@ CREATE TABLE IF NOT EXISTS agricultural_federation_app.member (
     coop_id UUID REFERENCES agricultural_federation_app.cooperative(id),
     status VARCHAR(10) DEFAULT 'active' NOT NULL
     );
+
+CREATE TABLE IF NOT EXISTS agricultural_federation_app.referrer (
+    id UUID PRIMARY KEY,
+    referrer_at TIMESTAMP DEFAULT NOW() NOT NULL,
+    new_member UUID REFERENCES agricultural_federation_app.member(id) NOT NULL,
+    referrer_id UUID REFERENCES agricultural_federation_app.member(id) NOT NULL
+    );
