@@ -6,5 +6,5 @@ This project implements a comprehensive REST API for managing agricultural coope
 
 ### Authors
 
-- [Ervin](https://github.com/Anerti/) - STD24213
+- [Ervin](https://github.com/Anerti/) - STD24202
 - [Antonio](https://github.com/anthonyRanivoarison) - STD24213
