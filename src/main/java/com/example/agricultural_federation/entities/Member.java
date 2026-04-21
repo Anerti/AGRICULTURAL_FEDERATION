@@ -1,7 +1,7 @@
 package com.example.agricultural_federation.entities;
 
 import com.example.agricultural_federation.entities.enums.GenderEnum;
-import com.example.agricultural_federation.entities.enums.OccupationEnum;
+import com.example.agricultural_federation.entities.enums.RoleEnum;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,13 +16,13 @@ import java.util.Date;
 @ToString
 
 public class Member {
-    public String firstName;
-    public String lastName;
-    public Date birthDate;
-    public GenderEnum gender;
-    public String address;
-    public String profession;
-    public String phoneNumber;
-    public String email;
-    public OccupationEnum occupation;
+    private String firstName;
+    private String lastName;
+    private Date birthDate;
+    private GenderEnum gender;
+    private String address;
+    private String profession;
+    private String phoneNumber;
+    private String email;
+    private RoleEnum occupation;
 }

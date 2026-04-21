@@ -13,8 +13,8 @@ import java.util.List;
 @ToString
 
 public class Cooperative {
-    public String id;
-    public String location;
-    public String structure;
-    public List<Member> members;
+    private String id;
+    private String location;
+    private String structure;
+    private List<Member> members;
 }
