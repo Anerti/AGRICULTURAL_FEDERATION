@@ -1,5 +1,6 @@
 package com.example.agricultural_federation.validators;
 
+import com.example.agricultural_federation.dto.CollectivityInformationDto;
 import com.example.agricultural_federation.dto.CreateCollectivityDto;
 import com.example.agricultural_federation.dto.CreateCollectivityStructureDto;
 import com.example.agricultural_federation.entities.Member;
@@ -148,6 +149,16 @@ public class CollectivityValidator {
         }
         if (!validMemberIds.contains(memberId)) {
             throw new NotFoundException(position + " member not found in the provided members list");
+        }
+    }
+
+    public void validate(CollectivityInformationDto dto) {
+        validateName(dto);
+    }
+
+    private void validateName(CollectivityInformationDto dto) {
+        if (dto.getName() == null || dto.getName().isEmpty()) {
+            throw new BadRequestException("Name is required");
         }
     }
 }
