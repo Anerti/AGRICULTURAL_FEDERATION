@@ -3,15 +3,12 @@ package com.example.agricultural_federation.controllers;
 import com.example.agricultural_federation.dto.CollectivityDto;
 import com.example.agricultural_federation.dto.CollectivityIdentifierRequest;
 import com.example.agricultural_federation.dto.CreateCollectivityDto;
+import com.example.agricultural_federation.entities.MembershipFee;
 import com.example.agricultural_federation.services.CollectivityService;
+import com.example.agricultural_federation.services.MembershipFeeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -20,10 +17,13 @@ import java.util.List;
 @RequestMapping("/collectivities")
 public class CollectivityController {
 
+    private final MembershipFeeService membershipFeeService;
     private final CollectivityService collectivityService;
 
-    public CollectivityController(CollectivityService collectivityService) {
+
+    public CollectivityController(CollectivityService collectivityService, MembershipFeeService membershipFeeService) {
         this.collectivityService = collectivityService;
+        this.membershipFeeService = membershipFeeService;
     }
 
     @PostMapping
@@ -39,5 +39,11 @@ public class CollectivityController {
             @RequestBody CollectivityIdentifierRequest request) {
         CollectivityDto collectivity = collectivityService.assignIdentifiers(collectivityId, federationId, request.getName());
         return new ResponseEntity<>(collectivity, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{id}/membershipFees")
+    public ResponseEntity<List<MembershipFee>> getMembershipFees(@PathVariable String id) {
+        List<MembershipFee> fees = membershipFeeService.getFeesByCoopId(id);
+        return ResponseEntity.ok(fees);
     }
 }
