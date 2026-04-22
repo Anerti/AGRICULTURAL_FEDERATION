@@ -90,16 +90,24 @@ public Cooperative save(Cooperative cooperative, List<Member> members) {
         }
     }
 
-    public boolean nameExists(String name) {
-        String sql = "SELECT 1 FROM agricultural_federation_app.cooperative WHERE name = ?";
+    public boolean existsByColumn(String column, String value) {
+        String sql = "SELECT " + column + " FROM agricultural_federation_app.cooperative WHERE " + column + " = ?";
         try (Connection connection = dataSource.getConnection();
                 PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setString(1, name);
+            stmt.setString(1, value);
             ResultSet rs = stmt.executeQuery();
             return rs.next();
         } catch (SQLException e) {
-            throw new RuntimeException("Error checking name existence", e);
+            throw new RuntimeException("Error checking " + column + " existence", e);
         }
+    }
+
+    public boolean nameExists(String name) {
+        return existsByColumn("name", name);
+    }
+
+    public boolean numberExists(String number) {
+        return existsByColumn("number", number);
     }
 
     public String generateNextNumber() {

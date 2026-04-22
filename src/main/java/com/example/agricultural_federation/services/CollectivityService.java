@@ -2,6 +2,7 @@ package com.example.agricultural_federation.services;
 
 import com.example.agricultural_federation.repositories.MemberRepository;
 import com.example.agricultural_federation.dto.CollectivityDto;
+import com.example.agricultural_federation.dto.CollectivityInformationDto;
 import com.example.agricultural_federation.dto.CollectivityStructureDto;
 import com.example.agricultural_federation.dto.CreateCollectivityDto;
 import com.example.agricultural_federation.entities.Cooperative;
@@ -95,6 +96,38 @@ public class CollectivityService {
             }
         }
         return null;
+    }
+
+    public CollectivityDto updateInformations(String collectivityId, CollectivityInformationDto informationDto) {
+        collectivityValidator.validate(informationDto);
+
+        Cooperative cooperative = cooperativeRepository.findById(collectivityId);
+        if (cooperative == null) {
+            throw new NotFoundException("Collectivity not found");
+        }
+
+        String number = String.valueOf(informationDto.getNumber());
+        if (cooperativeRepository.numberExists(number)) {
+            throw new BadRequestException("Number already used by another collectivity");
+        }
+
+        if (cooperativeRepository.nameExists(informationDto.getName())) {
+            throw new BadRequestException("Name already used by another collectivity");
+        }
+
+        cooperative.setName(informationDto.getName());
+        cooperative.setNumber(number);
+
+        Cooperative updated = cooperativeRepository.update(cooperative);
+
+        CollectivityDto dto = new CollectivityDto();
+        dto.setId(updated.getId());
+        dto.setNumber(updated.getNumber());
+        dto.setName(updated.getName());
+        dto.setLocation(updated.getLocation());
+        dto.setSpecialty(updated.getSpecialty());
+
+        return dto;
     }
 
     public CollectivityDto assignIdentifiers(String collectivityId, String federationId, String proposedName) {

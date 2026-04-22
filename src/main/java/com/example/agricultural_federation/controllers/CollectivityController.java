@@ -2,6 +2,7 @@ package com.example.agricultural_federation.controllers;
 
 import com.example.agricultural_federation.dto.CollectivityDto;
 import com.example.agricultural_federation.dto.CollectivityIdentifierRequest;
+import com.example.agricultural_federation.dto.CollectivityInformationDto;
 import com.example.agricultural_federation.dto.CreateCollectivityDto;
 import com.example.agricultural_federation.entities.MembershipFee;
 import com.example.agricultural_federation.services.CollectivityService;
@@ -30,6 +31,14 @@ public class CollectivityController {
     public ResponseEntity<List<CollectivityDto>> createCollectivities(@RequestBody List<CreateCollectivityDto> createCollectivityDtos) throws SQLException {
         List<CollectivityDto> createdCollectivities = collectivityService.createCollectivities(createCollectivityDtos);
         return new ResponseEntity<>(createdCollectivities, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}/informations")
+    public ResponseEntity<CollectivityDto> updateInformations(
+            @PathVariable String id,
+            @RequestBody CollectivityInformationDto informationDto) {
+        CollectivityDto collectivity = collectivityService.updateInformations(id, informationDto);
+        return ResponseEntity.ok(collectivity);
     }
 
     @PostMapping("/{collectivityId}/identifiers")

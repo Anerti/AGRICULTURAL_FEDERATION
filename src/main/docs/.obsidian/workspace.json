@@ -1,29 +1,23 @@
 {
   "main": {
-    "id": "f06d146a2329da56",
+    "id": "e2a1887796987f91",
     "type": "split",
     "children": [
       {
-        "id": "03c26d950e53e98d",
+        "id": "43082771adc063c2",
         "type": "tabs",
         "children": [
           {
-            "id": "f97ae9872fa664f2",
+            "id": "02b48839466752f7",
             "type": "leaf",
             "state": {
               "type": "canvas",
               "state": {
                 "file": "AGRICULTURAL_FEDERATION.canvas",
                 "viewState": {
-<<<<<<< HEAD
-                  "x": 843.6451662681188,
-                  "y": 164.8229670514855,
-                  "zoom": -1.233774693196505
-=======
-                  "x": 35.10073597898818,
-                  "y": 669.592702912519,
-                  "zoom": -0.40319787877350066
->>>>>>> 8aee4a9026b936e02c6f9179d6e748a242b35fe5
+                  "x": 1108.627764134967,
+                  "y": -488.8199006874025,
+                  "zoom": -1.339857305542968
                 }
               },
               "icon": "lucide-layout-dashboard",
@@ -36,15 +30,15 @@
     "direction": "vertical"
   },
   "left": {
-    "id": "4c2dc4adad45aae1",
+    "id": "b659221685638759",
     "type": "split",
     "children": [
       {
-        "id": "3fcf666d7d58232f",
+        "id": "b011a25b85eafeab",
         "type": "tabs",
         "children": [
           {
-            "id": "93997ae1fca88cb3",
+            "id": "e5301a291a17e133",
             "type": "leaf",
             "state": {
               "type": "file-explorer",
@@ -57,7 +51,7 @@
             }
           },
           {
-            "id": "af112852bcb4e100",
+            "id": "cbc2a619d0681ecf",
             "type": "leaf",
             "state": {
               "type": "search",
@@ -74,7 +68,7 @@
             }
           },
           {
-            "id": "599d68b08811dbd8",
+            "id": "0c6be3c08845ca4c",
             "type": "leaf",
             "state": {
               "type": "bookmarks",
@@ -90,15 +84,15 @@
     "width": 300
   },
   "right": {
-    "id": "8a8a590a613038e4",
+    "id": "c301c121ff4aa540",
     "type": "split",
     "children": [
       {
-        "id": "39e69f1b8b679903",
+        "id": "ede86d56c406c41c",
         "type": "tabs",
         "children": [
           {
-            "id": "38e01abdc019a359",
+            "id": "e449862cf1756eac",
             "type": "leaf",
             "state": {
               "type": "backlink",
@@ -117,7 +111,7 @@
             }
           },
           {
-            "id": "ccff58c03f9d1c88",
+            "id": "bc47cdc98ab6272e",
             "type": "leaf",
             "state": {
               "type": "outgoing-link",
@@ -131,7 +125,7 @@
             }
           },
           {
-            "id": "c9d62f7529838320",
+            "id": "c4d13569d1f72c13",
             "type": "leaf",
             "state": {
               "type": "tag",
@@ -146,7 +140,7 @@
             }
           },
           {
-            "id": "ae619eee2b7b08ec",
+            "id": "97a8b4b399836e3d",
             "type": "leaf",
             "state": {
               "type": "all-properties",
@@ -160,7 +154,7 @@
             }
           },
           {
-            "id": "7be4b942cec1f5bc",
+            "id": "7dea93d28ad13b76",
             "type": "leaf",
             "state": {
               "type": "outline",
@@ -192,10 +186,6 @@
       "bases:Create new base": false
     }
   },
-  "active": "f97ae9872fa664f2",
-  "lastOpenFiles": [
-    "api.yaml~",
-    "Untitled.md",
-    "AGRICULTURAL_FEDERATION.canvas"
-  ]
+  "active": "e5301a291a17e133",
+  "lastOpenFiles": []
 }
