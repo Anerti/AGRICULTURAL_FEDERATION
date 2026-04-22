@@ -1,19 +1,14 @@
-package com.example.agricultural_federation.entities;
+package com.example.agricultural_federation.dto;
 
 import com.example.agricultural_federation.entities.enums.GenderEnum;
 import com.example.agricultural_federation.entities.enums.RoleEnum;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.Date;
 import java.util.List;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Data
-public class Member {
-    private String id;
+public class CreateMemberStructureDto {
     private String firstName;
     private String lastName;
     private Date birthDate;
@@ -23,7 +18,11 @@ public class Member {
     private String phoneNumber;
     private String email;
     private RoleEnum role;
-    private Date joinedAt;
-    private String collectivityId;
-    private List<Member> referees;
+
+    private String collectivityIdentifier;
+
+    private List<String> referees;
+
+    private boolean registrationFeePaid;
+    private boolean membershipDuesPaid;
 }

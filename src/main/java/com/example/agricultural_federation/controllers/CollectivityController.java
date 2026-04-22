@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.sql.SQLException;
 import java.util.List;
 
 @RestController
@@ -23,7 +24,7 @@ public class CollectivityController {
     }
 
     @PostMapping
-    public ResponseEntity<List<CollectivityDto>> createCollectivities(@RequestBody List<CreateCollectivityDto> createCollectivityDtos) {
+    public ResponseEntity<List<CollectivityDto>> createCollectivities(@RequestBody List<CreateCollectivityDto> createCollectivityDtos) throws SQLException {
         List<CollectivityDto> createdCollectivities = collectivityService.createCollectivities(createCollectivityDtos);
         return new ResponseEntity<>(createdCollectivities, HttpStatus.CREATED);
     }

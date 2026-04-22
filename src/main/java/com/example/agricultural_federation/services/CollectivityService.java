@@ -1,15 +1,16 @@
 package com.example.agricultural_federation.services;
 
+import com.example.agricultural_federation.repositories.MemberRepository;
 import com.example.agricultural_federation.dto.CollectivityDto;
 import com.example.agricultural_federation.dto.CollectivityStructureDto;
 import com.example.agricultural_federation.dto.CreateCollectivityDto;
 import com.example.agricultural_federation.entities.Cooperative;
 import com.example.agricultural_federation.entities.Member;
 import com.example.agricultural_federation.repositories.CooperativeRepository;
-import com.example.agricultural_federation.repositories.MemberRepository;
 import com.example.agricultural_federation.validators.CollectivityValidator;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class CollectivityService {
         this.collectivityValidator = collectivityValidator;
     }
 
-    public List<CollectivityDto> createCollectivities(List<CreateCollectivityDto> createCollectivityDtos) {
+    public List<CollectivityDto> createCollectivities(List<CreateCollectivityDto> createCollectivityDtos) throws SQLException {
         List<CollectivityDto> createdCollectivities = new ArrayList<>();
 
         for (CreateCollectivityDto dto : createCollectivityDtos) {
@@ -37,7 +38,7 @@ public class CollectivityService {
         return createdCollectivities;
     }
 
-    private CollectivityDto createCollectivity(CreateCollectivityDto dto) {
+    private CollectivityDto createCollectivity(CreateCollectivityDto dto) throws SQLException {
         collectivityValidator.validate(dto);
 
         List<Member> members = findAllMembers(dto);
@@ -55,10 +56,10 @@ public class CollectivityService {
         return buildCollectivityDto(savedCooperative, dto.getStructure(), members);
     }
 
-    private List<Member> findAllMembers(CreateCollectivityDto dto) {
+    private List<Member> findAllMembers(CreateCollectivityDto dto) throws SQLException {
         List<Member> members = new ArrayList<>();
         for (String memberId : dto.getMembers()) {
-            members.add(memberRepository.findById(memberId));
+            memberRepository.findById(memberId).ifPresent(members::add);
         }
         return members;
     }

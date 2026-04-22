@@ -8,12 +8,10 @@ import com.example.agricultural_federation.exceptions.NotFoundException;
 import com.example.agricultural_federation.repositories.MemberRepository;
 import org.springframework.stereotype.Component;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Component
 public class CollectivityValidator {
@@ -85,10 +83,10 @@ public class CollectivityValidator {
                 throw new BadRequestException("Duplicate member ID: " + memberId);
             }
             try {
-                Member member = memberRepository.findById(memberId);
+                Optional<Member> member = memberRepository.findById(memberId);
                 foundMembers.add(member);
                 seenIds.add(memberId);
-            } catch (NotFoundException e) {
+            } catch (NotFoundException | SQLException e) {
                 throw new NotFoundException("Member not found with id: " + memberId);
             }
         }
