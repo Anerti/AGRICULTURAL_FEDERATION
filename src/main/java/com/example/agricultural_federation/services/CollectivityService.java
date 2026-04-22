@@ -5,6 +5,8 @@ import com.example.agricultural_federation.dto.CollectivityStructureDto;
 import com.example.agricultural_federation.dto.CreateCollectivityDto;
 import com.example.agricultural_federation.entities.Cooperative;
 import com.example.agricultural_federation.entities.Member;
+import com.example.agricultural_federation.exceptions.BadRequestException;
+import com.example.agricultural_federation.exceptions.NotFoundException;
 import com.example.agricultural_federation.repositories.CooperativeRepository;
 import com.example.agricultural_federation.repositories.MemberRepository;
 import com.example.agricultural_federation.validators.CollectivityValidator;
@@ -92,5 +94,40 @@ public class CollectivityService {
             }
         }
         return null;
+    }
+
+    public CollectivityDto assignIdentifiers(String collectivityId, String federationId, String proposedName) {
+        if (federationId == null || federationId.isEmpty()) {
+            throw new BadRequestException("Missing federation authorization");
+        }
+
+        Cooperative cooperative = cooperativeRepository.findById(collectivityId);
+        if (cooperative == null) {
+            throw new NotFoundException("Collectivity not found");
+        }
+
+        if (cooperative.getNumber() != null && !cooperative.getNumber().isEmpty()) {
+            throw new BadRequestException("Collectivity already has identifiers assigned");
+        }
+
+        if (cooperativeRepository.nameExists(proposedName)) {
+            throw new BadRequestException("Name already exists in the system");
+        }
+
+        String number = cooperativeRepository.generateNextNumber();
+
+        cooperative.setName(proposedName);
+        cooperative.setNumber(number);
+
+        Cooperative updated = cooperativeRepository.update(cooperative);
+
+        CollectivityDto dto = new CollectivityDto();
+        dto.setId(updated.getId());
+        dto.setNumber(updated.getNumber());
+        dto.setName(updated.getName());
+        dto.setLocation(updated.getLocation());
+        dto.setSpecialty(updated.getSpecialty());
+
+        return dto;
     }
 }

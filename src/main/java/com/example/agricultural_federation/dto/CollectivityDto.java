@@ -12,6 +12,8 @@ import java.util.List;
 @Data
 public class CollectivityDto {
     private String id;
+    private String number;
+    private String name;
     private String location;
     private String specialty;
     private CollectivityStructureDto structure;

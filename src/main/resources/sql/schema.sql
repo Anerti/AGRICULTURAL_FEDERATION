@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS agricultural_federation_app.cooperative_federation (
 CREATE TABLE IF NOT EXISTS agricultural_federation_app.cooperative (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name VARCHAR(50) UNIQUE NOT NULL,
+    number VARCHAR(20) UNIQUE NOT NULL,
     specialty VARCHAR(20) NOT NULL,
     creation_date DATE DEFAULT CURRENT_DATE,
     location VARCHAR(30) NOT NULL,
