@@ -107,11 +107,11 @@ public class CollectivityService {
         }
 
         String number = String.valueOf(informationDto.getNumber());
-        if (cooperativeRepository.numberExistsExcludingId(number, collectivityId)) {
+        if (cooperativeRepository.numberExists(number)) {
             throw new BadRequestException("Number already used by another collectivity");
         }
 
-        if (cooperativeRepository.nameExistsExcludingId(informationDto.getName(), collectivityId)) {
+        if (cooperativeRepository.nameExists(informationDto.getName())) {
             throw new BadRequestException("Name already used by another collectivity");
         }
 
