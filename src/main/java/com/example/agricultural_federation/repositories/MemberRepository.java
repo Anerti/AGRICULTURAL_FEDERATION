@@ -6,6 +6,7 @@ import com.example.agricultural_federation.entities.enums.RoleEnum;
 import com.example.agricultural_federation.exceptions.NotFoundException;
 import org.springframework.stereotype.Repository;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,10 +16,10 @@ import java.util.UUID;
 @Repository
 public class MemberRepository {
 
-    private final Connection connection;
+    private final DataSource dataSource;
 
-    public MemberRepository(Connection connection) {
-        this.connection = connection;
+    public MemberRepository(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
     public Member findById(String id) {
@@ -41,7 +42,8 @@ public class MemberRepository {
                 agricultural_federation_app.member 
             WHERE 
                 id = ?""";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        try (Connection connection = dataSource.getConnection();
+                PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setObject(1, UUID.fromString(id));
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
