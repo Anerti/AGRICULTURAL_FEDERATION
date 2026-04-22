@@ -25,5 +25,6 @@ public class Member {
     private RoleEnum role;
     private Date joinedAt;
     private String collectivityId;
+    private String status;
     private List<Member> referees;
 }
