@@ -66,6 +66,7 @@ CREATE TABLE IF NOT EXISTS agricultural_federation_app.membership_fee (
     cooperative_id UUID NOT NULL REFERENCES agricultural_federation_app.cooperative (id),
     label VARCHAR(100) NOT NULL,
     amount NUMERIC(15, 2) NOT NULL,
+    status VARCHAR(10) DEFAULT 'active' NOT NULL,
     frequency agricultural_federation_app.frequency NOT NULL,
     eligible_from TIMESTAMP DEFAULT NOW()
 );
