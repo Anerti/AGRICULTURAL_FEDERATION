@@ -72,11 +72,13 @@ CREATE TABLE IF NOT EXISTS agricultural_federation_app.membership_fee (
 
 CREATE TABLE IF NOT EXISTS agricultural_federation_app.payment (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    member_id UUID NOT NULL REFERENCES agricultural_federation_app.member(id),
-    fee_id UUID NOT NULL REFERENCES agricultural_federation_app.membership_fee(id),
-    amount NUMERIC(15, 2) NOT NULL,
+    member_id VARCHAR(255) NOT NULL,
+    amount BIGINT NOT NULL,
     payment_date DATE NOT NULL DEFAULT CURRENT_DATE,
-    payment_mode agricultural_federation_app.payment_mode NOT NULL,
+    payment_mode VARCHAR(20) NOT NULL,
+    membership_fee_identifier VARCHAR(255) NOT NULL,
+    account_credited_identifier VARCHAR(255),
+    creation_date DATE,
     created_at TIMESTAMP DEFAULT NOW()
 );
 
