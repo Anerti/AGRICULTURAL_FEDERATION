@@ -2,20 +2,17 @@ package com.example.agricultural_federation.entities;
 
 import com.example.agricultural_federation.entities.enums.GenderEnum;
 import com.example.agricultural_federation.entities.enums.RoleEnum;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import java.util.Date;
 
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Data
-@ToString
-
 public class Member {
+    private String id;
     private String firstName;
     private String lastName;
     private Date birthDate;
@@ -24,5 +21,6 @@ public class Member {
     private String profession;
     private String phoneNumber;
     private String email;
-    private RoleEnum occupation;
+    private RoleEnum role;
+    private Date joinedAt;
 }

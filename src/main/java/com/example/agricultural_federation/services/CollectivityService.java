@@ -1,0 +1,96 @@
+package com.example.agricultural_federation.services;
+
+import com.example.agricultural_federation.dto.CollectivityDto;
+import com.example.agricultural_federation.dto.CollectivityStructureDto;
+import com.example.agricultural_federation.dto.CreateCollectivityDto;
+import com.example.agricultural_federation.entities.Cooperative;
+import com.example.agricultural_federation.entities.Member;
+import com.example.agricultural_federation.repositories.CooperativeRepository;
+import com.example.agricultural_federation.repositories.MemberRepository;
+import com.example.agricultural_federation.validators.CollectivityValidator;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
+public class CollectivityService {
+
+    private final CooperativeRepository cooperativeRepository;
+    private final MemberRepository memberRepository;
+    private final CollectivityValidator collectivityValidator;
+
+    public CollectivityService(CooperativeRepository cooperativeRepository, MemberRepository memberRepository, CollectivityValidator collectivityValidator) {
+        this.cooperativeRepository = cooperativeRepository;
+        this.memberRepository = memberRepository;
+        this.collectivityValidator = collectivityValidator;
+    }
+
+    public List<CollectivityDto> createCollectivities(List<CreateCollectivityDto> createCollectivityDtos) {
+        List<CollectivityDto> createdCollectivities = new ArrayList<>();
+
+        for (CreateCollectivityDto dto : createCollectivityDtos) {
+            CollectivityDto created = createCollectivity(dto);
+            createdCollectivities.add(created);
+        }
+
+        return createdCollectivities;
+    }
+
+    private CollectivityDto createCollectivity(CreateCollectivityDto dto) {
+        collectivityValidator.validate(dto);
+
+        List<Member> members = findAllMembers(dto);
+
+        Cooperative cooperative = new Cooperative();
+        cooperative.setName(generateCollectivityName(dto.getLocation(), dto.getSpecialty()));
+        cooperative.setLocation(dto.getLocation());
+        cooperative.setSpecialty(dto.getSpecialty());
+        cooperative.setFederationApproval(dto.getFederationApproval());
+        cooperative.setMembers(members);
+
+        Cooperative savedCooperative = cooperativeRepository.save(cooperative, members);
+        savedCooperative.setMembers(members);
+
+        return buildCollectivityDto(savedCooperative, dto.getStructure(), members);
+    }
+
+    private List<Member> findAllMembers(CreateCollectivityDto dto) {
+        List<Member> members = new ArrayList<>();
+        for (String memberId : dto.getMembers()) {
+            members.add(memberRepository.findById(memberId));
+        }
+        return members;
+    }
+
+    private String generateCollectivityName(String location, String specialty) {
+        return specialty.toUpperCase().replace(" ", "_") + "_" + location.toUpperCase().replace(" ", "_");
+    }
+
+    private CollectivityDto buildCollectivityDto(Cooperative cooperative, com.example.agricultural_federation.dto.CreateCollectivityStructureDto structureDto, List<Member> members) {
+        CollectivityDto dto = new CollectivityDto();
+        dto.setId(cooperative.getId());
+        dto.setLocation(cooperative.getLocation());
+        dto.setSpecialty(cooperative.getSpecialty());
+
+        CollectivityStructureDto structure = new CollectivityStructureDto();
+        structure.setPresident(findMemberById(structureDto.getPresident(), members));
+        structure.setVicePresident(findMemberById(structureDto.getVicePresident(), members));
+        structure.setTreasurer(findMemberById(structureDto.getTreasurer(), members));
+        structure.setSecretary(findMemberById(structureDto.getSecretary(), members));
+        dto.setStructure(structure);
+
+        dto.setMembers(members);
+
+        return dto;
+    }
+
+    private Member findMemberById(String id, List<Member> members) {
+        for (Member member : members) {
+            if (member.getId().equals(id)) {
+                return member;
+            }
+        }
+        return null;
+    }
+}
