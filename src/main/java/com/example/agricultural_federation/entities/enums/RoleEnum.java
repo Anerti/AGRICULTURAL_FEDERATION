@@ -6,5 +6,6 @@ public enum RoleEnum {
     SECRETARY,
     TREASURER,
     VICE_PRESIDENT,
+    CONFIRMED_MEMBER,
     PRESIDENT
 }
