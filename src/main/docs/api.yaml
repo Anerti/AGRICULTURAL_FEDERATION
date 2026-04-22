@@ -5,7 +5,8 @@ info:
     # Versioning
     This API uses semantic versioning (MAJOR.MINOR.PATCH). Available versions are : 
     - v0.0.1 (2026-04-21) : POST /collectivities for collectivities creation and POST /members for members creation.
-  version: 0.0.1
+    - v0.0.2 (2026-04-22) : POST /collectivities/{collectivityId}/identifiers for assigning unique number and name to collectivities.
+  version: 0.0.2
 servers:
   - url: 'https://localhost:8080'
 paths:
@@ -13,7 +14,7 @@ paths:
     post:
       summary: Create list of collectivities
       description: |
-        During collectivity request body creation, only members ID are provided to identify members. 
+        During collectivity request body creation, only members ID are provided to identify members.
         But the response content includes members information, not only their IDs.
       requestBody:
         content:
@@ -35,6 +36,49 @@ paths:
           description: Collectivity without federation approval or structure missing.
         404:
           description: Member not found.
+
+  '/collectivities/{collectivityId}/identifiers':
+    post:
+      summary: Assign unique number and name to a collectivity
+      description: |
+        Assign a unique number and name to a collectivity by the federation.
+        If the proposed name already exists in the system, the request will be rejected.
+      parameters:
+        - name: collectivityId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: X-Federation-Id
+          in: header
+          required: true
+          schema:
+            type: string
+          description: Federation identifier authorizing the identifier assignment.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CollectivityIdentifierRequest'
+      responses:
+        201:
+          description: Identifier assigned successfully
+          headers:
+            Location:
+              schema:
+                type: string
+              description: URL of the updated collectivity with new identifiers
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Collectivity'
+        400:
+          description: |
+            - Collectivity already has identifiers assigned.
+            - Name already exists in the system.
+            - Missing federation authorization.
+        404:
+          description: Collectivity not found.
   '/members':
     post:
       summary: Create list of members
@@ -104,6 +148,12 @@ components:
       properties:
         id:
           type: string
+        number:
+          type: string
+          description: Unique identifier number assigned by the federation
+        name:
+          type: string
+          description: Unique name assigned by the federation
         location:
           type: string
         structure:
@@ -112,6 +162,14 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Member'
+    CollectivityIdentifierRequest:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          description: Proposed unique name for the collectivity
     MemberIdentifier:
       type: string
     CreateMember:

@@ -15,9 +15,15 @@
               "state": {
                 "file": "AGRICULTURAL_FEDERATION.canvas",
                 "viewState": {
+<<<<<<< HEAD
                   "x": 843.6451662681188,
                   "y": 164.8229670514855,
                   "zoom": -1.233774693196505
+=======
+                  "x": 35.10073597898818,
+                  "y": 669.592702912519,
+                  "zoom": -0.40319787877350066
+>>>>>>> 8aee4a9026b936e02c6f9179d6e748a242b35fe5
                 }
               },
               "icon": "lucide-layout-dashboard",
@@ -187,5 +193,9 @@
     }
   },
   "active": "f97ae9872fa664f2",
-  "lastOpenFiles": []
+  "lastOpenFiles": [
+    "api.yaml~",
+    "Untitled.md",
+    "AGRICULTURAL_FEDERATION.canvas"
+  ]
 }

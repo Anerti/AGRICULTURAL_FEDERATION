@@ -2,11 +2,11 @@
 INSERT INTO agricultural_federation_app.cooperative_federation (id) VALUES
     ('a1b2c3d4-0001-0001-0001-000000000001');
 
-INSERT INTO agricultural_federation_app.cooperative (id, name, specialty, creation_date, location, coop_fed_id, status, federation_auth) VALUES
-    ('b2c3d4e5-0001-0001-0001-000000000001', 'Coopérative du Vallée', 'CEREALS', '2015-03-15', 'Lyon', 'a1b2c3d4-0001-0001-0001-000000000001', 'active', TRUE),
-    ('b2c3d4e5-0002-0002-0002-000000000002', 'Les Producteurs du Sud', 'VEGETABLES', '2018-07-22', 'Marseille', 'a1b2c3d4-0001-0001-0001-000000000001', 'active', TRUE),
-    ('b2c3d4e5-0003-0003-0003-000000000003', 'Fruits et Traditions', 'FRUITS', '2020-01-10', 'Avignon', 'a1b2c3d4-0001-0001-0001-000000000001', 'active', FALSE),
-    ('b2c3d4e5-0004-0004-0004-000000000004', 'Bio Équilibre', 'ORGANIC', '2019-09-05', 'Bordeaux', 'a1b2c3d4-0001-0001-0001-000000000001', 'active', TRUE);
+INSERT INTO agricultural_federation_app.cooperative (id, name, number, specialty, creation_date, location, coop_fed_id, status, federation_auth) VALUES
+    ('b2c3d4e5-0001-0001-0001-000000000001', 'Coopérative du Vallée', 'COOP-001', 'CEREALS', '2015-03-15', 'Lyon', 'a1b2c3d4-0001-0001-0001-000000000001', 'active', TRUE),
+    ('b2c3d4e5-0002-0002-0002-000000000002', 'Les Producteurs du Sud', 'COOP-002', 'VEGETABLES', '2018-07-22', 'Marseille', 'a1b2c3d4-0001-0001-0001-000000000001', 'active', TRUE),
+    ('b2c3d4e5-0003-0003-0003-000000000003', 'Fruits et Traditions', 'COOP-003', 'FRUITS', '2020-01-10', 'Avignon', 'a1b2c3d4-0001-0001-0001-000000000001', 'active', FALSE),
+    ('b2c3d4e5-0004-0004-0004-000000000004', 'Bio Équilibre', 'COOP-004', 'ORGANIC', '2019-09-05', 'Bordeaux', 'a1b2c3d4-0001-0001-0001-000000000001', 'active', TRUE);
 
 INSERT INTO agricultural_federation_app.member (id, first_name, last_name, birth_date, gender, address, phone, profession, email, role, coop_id, status) VALUES
     ('c3d4e5f6-0001-0001-0001-000000000001', 'Jean', 'Dupont', '1975-04-12', 'M', '12 Rue de la Paix, Lyon', '0612345678', 'Agriculteur', 'jean.dupont@email.com', 'PRESIDENT', 'b2c3d4e5-0001-0001-0001-000000000001', 'active'),

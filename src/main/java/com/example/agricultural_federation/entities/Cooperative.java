@@ -13,6 +13,7 @@ import java.util.List;
 public class Cooperative {
     private String id;
     private String name;
+    private String number;
     private String location;
     private String specialty;
     private Boolean federationApproval;
