@@ -14,6 +14,7 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Component
@@ -86,10 +87,13 @@ public class CollectivityValidator {
                 throw new BadRequestException("Duplicate member ID: " + memberId);
             }
             try {
-                Member member = memberRepository.findById(memberId);
-                foundMembers.add(member);
+                Optional<Member> memberOpt = memberRepository.findById(memberId);
+                if (memberOpt.isEmpty()) {
+                    throw new NotFoundException("Member not found with id: " + memberId);
+                }
+                foundMembers.add(memberOpt.get());
                 seenIds.add(memberId);
-            } catch (NotFoundException | SQLException e) {
+            } catch (SQLException e) {
                 throw new NotFoundException("Member not found with id: " + memberId);
             }
         }

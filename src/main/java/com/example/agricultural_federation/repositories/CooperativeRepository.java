@@ -22,22 +22,24 @@ public class CooperativeRepository {
         this.dataSource = dataSource;
     }
 
-    public Cooperative save(Cooperative cooperative, List<Member> members) {
+public Cooperative save(Cooperative cooperative, List<Member> members) {
         String sql = """
                         INSERT INTO 
                             agricultural_federation_app.cooperative 
-                            (DEFAULT, name, specialty, DEFAULT, location, DEFAULT, status, federation_auth) 
-                        VALUES (?, ?, ?, ?, ?)
-                     """;
+                            (id, name, specialty, number, location, creation_date, status, federation_auth) 
+                        VALUES (gen_random_uuid(), ?, ?, ?, ?, ?, ?, ?)
+                      """;
         
         try (Connection connection = dataSource.getConnection();
                 PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
         ) {
             stmt.setString(1, cooperative.getName());
             stmt.setString(2, cooperative.getSpecialty());
-            stmt.setString(3, cooperative.getLocation());
-            stmt.setString(4, "active");
-            stmt.setBoolean(5, cooperative.getFederationApproval() != null ? cooperative.getFederationApproval() : false);
+            stmt.setString(3, null);
+            stmt.setString(4, cooperative.getLocation());
+            stmt.setTimestamp(5, new java.sql.Timestamp(System.currentTimeMillis()));
+            stmt.setString(6, "active");
+            stmt.setBoolean(7, cooperative.getFederationApproval() != null ? cooperative.getFederationApproval() : false);
             stmt.executeUpdate();
 
             ResultSet rs = stmt.getGeneratedKeys();
