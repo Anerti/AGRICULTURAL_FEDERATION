@@ -1,9 +1,6 @@
 package com.example.agricultural_federation.controllers;
 
-import com.example.agricultural_federation.dto.CollectivityDto;
-import com.example.agricultural_federation.dto.CollectivityIdentifierRequest;
-import com.example.agricultural_federation.dto.CollectivityInformationDto;
-import com.example.agricultural_federation.dto.CreateCollectivityDto;
+import com.example.agricultural_federation.dto.*;
 import com.example.agricultural_federation.entities.MembershipFee;
 import com.example.agricultural_federation.services.CollectivityService;
 import com.example.agricultural_federation.services.MembershipFeeService;
@@ -55,4 +52,10 @@ public class CollectivityController {
         List<MembershipFee> fees = membershipFeeService.getFeesByCoopId(id);
         return ResponseEntity.ok(fees);
     }
+
+    @PostMapping("/{id}/membershipFees")
+    public ResponseEntity<List<MembershipFee>> createFees(@PathVariable String id, @RequestBody List<CreateMembershipFeeDto> dtos) {
+        return ResponseEntity.ok(membershipFeeService.createFees(id, dtos));
+    }
+
 }
