@@ -1,3 +1,30 @@
+-- Enums
+CREATE TYPE agricultural_federation_app.gender AS ENUM ('M', 'F');
+
+CREATE TYPE agricultural_federation_app.role AS ENUM (
+    'JUNIOR',
+    'SENIOR',
+    'SECRETARY',
+    'TREASURER',
+    'VICE_PRESIDENT',
+    'PRESIDENT'
+);
+
+CREATE TYPE agricultural_federation_app.account_type AS ENUM ('CASH', 'MOBILE_MONEY', 'BANK');
+
+CREATE TYPE agricultural_federation_app.frequency AS ENUM (
+    'MONTHLY',
+    'ANNUAL',
+    'ONE_TIME'
+);
+
+CREATE TYPE agricultural_federation_app.payment_mode AS ENUM (
+    'CASH',
+    'BANK_TRANSFER',
+    'MOBILE_MONEY'
+);
+
+-- Tables
 CREATE TABLE IF NOT EXISTS agricultural_federation_app.cooperative_federation (
     id UUID PRIMARY KEY
 );
@@ -13,16 +40,6 @@ CREATE TABLE IF NOT EXISTS agricultural_federation_app.cooperative (
     coop_fed_id UUID REFERENCES agricultural_federation_app.cooperative_federation(id),
     status VARCHAR(10) DEFAULT 'active' NOT NULL,
     federation_auth BOOLEAN DEFAULT FALSE NOT NULL
-    );
-
-CREATE TYPE agricultural_federation_app.gender AS ENUM ('M', 'F');
-CREATE TYPE agricultural_federation_app.role AS ENUM (
-    'JUNIOR',
-    'SENIOR',
-    'SECRETARY',
-    'TREASURER',
-    'VICE_PRESIDENT',
-    'PRESIDENT'
 );
 
 CREATE TABLE IF NOT EXISTS agricultural_federation_app.member (
@@ -39,11 +56,43 @@ CREATE TABLE IF NOT EXISTS agricultural_federation_app.member (
     joined_at TIMESTAMP DEFAULT NOW(),
     coop_id UUID REFERENCES agricultural_federation_app.cooperative(id),
     status VARCHAR(10) DEFAULT 'active' NOT NULL
-    );
+);
 
 CREATE TABLE IF NOT EXISTS agricultural_federation_app.referrer (
     id UUID PRIMARY KEY,
     referrer_at TIMESTAMP DEFAULT NOW() NOT NULL,
     new_member UUID REFERENCES agricultural_federation_app.member(id) NOT NULL,
     referrer_id UUID REFERENCES agricultural_federation_app.member(id) NOT NULL
-    );
+);
+
+CREATE TABLE IF NOT EXISTS agricultural_federation_app.membership_fee (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    cooperative_id UUID NOT NULL REFERENCES agricultural_federation_app.cooperative (id),
+    label VARCHAR(100) NOT NULL,
+    amount NUMERIC(15, 2) NOT NULL,
+    status VARCHAR(10) DEFAULT 'active' NOT NULL,
+    frequency agricultural_federation_app.frequency NOT NULL,
+    eligible_from TIMESTAMP DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS agricultural_federation_app.payment (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    member_id VARCHAR(255) NOT NULL,
+    amount BIGINT NOT NULL,
+    payment_date DATE NOT NULL DEFAULT CURRENT_DATE,
+    payment_mode VARCHAR(20) NOT NULL,
+    membership_fee_identifier VARCHAR(255) NOT NULL,
+    account_credited_identifier VARCHAR(255),
+    creation_date DATE,
+    created_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS agricultural_federation_app.collectivity_transaction (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    cooperative_id UUID NOT NULL REFERENCES agricultural_federation_app.cooperative(id),
+    creation_date TIMESTAMP DEFAULT NOW(),
+    amount BIGINT NOT NULL,
+    payment_mode VARCHAR(20) NOT NULL,
+    account_credited_identifier VARCHAR(255),
+    member_debited_id UUID REFERENCES agricultural_federation_app.member(id)
+);

@@ -1,17 +1,12 @@
 package com.example.agricultural_federation.controllers;
 
-import com.example.agricultural_federation.dto.CollectivityDto;
-import com.example.agricultural_federation.dto.CollectivityIdentifierRequest;
-import com.example.agricultural_federation.dto.CreateCollectivityDto;
+import com.example.agricultural_federation.dto.*;
+import com.example.agricultural_federation.entities.MembershipFee;
 import com.example.agricultural_federation.services.CollectivityService;
+import com.example.agricultural_federation.services.MembershipFeeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -20,16 +15,33 @@ import java.util.List;
 @RequestMapping("/collectivities")
 public class CollectivityController {
 
+    private final MembershipFeeService membershipFeeService;
     private final CollectivityService collectivityService;
 
-    public CollectivityController(CollectivityService collectivityService) {
+
+    public CollectivityController(CollectivityService collectivityService, MembershipFeeService membershipFeeService) {
         this.collectivityService = collectivityService;
+        this.membershipFeeService = membershipFeeService;
     }
 
     @PostMapping
     public ResponseEntity<List<CollectivityDto>> createCollectivities(@RequestBody List<CreateCollectivityDto> createCollectivityDtos) throws SQLException {
         List<CollectivityDto> createdCollectivities = collectivityService.createCollectivities(createCollectivityDtos);
         return new ResponseEntity<>(createdCollectivities, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}/informations")
+    public ResponseEntity<CollectivityDto> updateInformations(
+            @PathVariable String id,
+            @RequestBody CollectivityInformationDto informationDto) {
+        CollectivityDto collectivity = collectivityService.updateInformations(id, informationDto);
+        return ResponseEntity.ok(collectivity);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CollectivityDetailsDto> getCollectivity(@PathVariable String id) {
+        CollectivityDetailsDto collectivity = collectivityService.getCollectivityById(id);
+        return ResponseEntity.ok(collectivity);
     }
 
     @PostMapping("/{collectivityId}/identifiers")
@@ -40,4 +52,16 @@ public class CollectivityController {
         CollectivityDto collectivity = collectivityService.assignIdentifiers(collectivityId, federationId, request.getName());
         return new ResponseEntity<>(collectivity, HttpStatus.CREATED);
     }
+
+    @GetMapping("/{id}/membershipFees")
+    public ResponseEntity<List<MembershipFee>> getMembershipFees(@PathVariable String id) {
+        List<MembershipFee> fees = membershipFeeService.getFeesByCoopId(id);
+        return ResponseEntity.ok(fees);
+    }
+
+    @PostMapping("/{id}/membershipFees")
+    public ResponseEntity<List<MembershipFee>> createFees(@PathVariable String id, @RequestBody List<CreateMembershipFeeDto> dtos) {
+        return ResponseEntity.ok(membershipFeeService.createFees(id, dtos));
+    }
+
 }

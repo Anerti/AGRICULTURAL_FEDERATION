@@ -69,7 +69,20 @@ public Cooperative save(Cooperative cooperative, List<Member> members) {
     }
 
     public Cooperative findById(String id) {
-        String sql = "SELECT id, name, number, specialty, location, creation_date, federation_auth FROM agricultural_federation_app.cooperative WHERE id = ?";
+        String sql = """
+        SELECT 
+            id, 
+            name, 
+            number, 
+            specialty, 
+            location, 
+            creation_date, 
+            status, 
+            federation_auth 
+        FROM 
+            agricultural_federation_app.cooperative 
+        WHERE id = ?
+        """;
         try (Connection connection = dataSource.getConnection();
                 PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setObject(1, UUID.fromString(id));
@@ -82,6 +95,8 @@ public Cooperative save(Cooperative cooperative, List<Member> members) {
                 cooperative.setSpecialty(rs.getString("specialty"));
                 cooperative.setLocation(rs.getString("location"));
                 cooperative.setFederationApproval(rs.getBoolean("federation_auth"));
+                cooperative.setCreationDate(rs.getObject("creation_date", java.time.LocalDate.class));
+                cooperative.setStatus(rs.getString("status"));
                 return cooperative;
             }
             return null;
@@ -90,16 +105,24 @@ public Cooperative save(Cooperative cooperative, List<Member> members) {
         }
     }
 
-    public boolean nameExists(String name) {
-        String sql = "SELECT 1 FROM agricultural_federation_app.cooperative WHERE name = ?";
+    public boolean existsByColumn(String column, String value) {
+        String sql = "SELECT " + column + " FROM agricultural_federation_app.cooperative WHERE " + column + " = ?";
         try (Connection connection = dataSource.getConnection();
                 PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setString(1, name);
+            stmt.setString(1, value);
             ResultSet rs = stmt.executeQuery();
             return rs.next();
         } catch (SQLException e) {
-            throw new RuntimeException("Error checking name existence", e);
+            throw new RuntimeException("Error checking " + column + " existence", e);
         }
+    }
+
+    public boolean nameExists(String name) {
+        return existsByColumn("name", name);
+    }
+
+    public boolean numberExists(String number) {
+        return existsByColumn("number", number);
     }
 
     public String generateNextNumber() {

@@ -1,25 +1,20 @@
-package com.example.agricultural_federation.entities;
+package com.example.agricultural_federation.dto;
 
-import com.example.agricultural_federation.dto.CollectivityStructureDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class Cooperative {
+public class CollectivityDetailsDto {
     private String id;
     private String name;
     private String number;
-    private String location;
     private String specialty;
-    private Boolean federationApproval;
-    private CollectivityStructureDto structure;
-    private List<Member> members;
     private LocalDate creationDate;
+    private String location;
     private String status;
 }

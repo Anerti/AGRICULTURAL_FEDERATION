@@ -18,9 +18,7 @@ import java.util.Optional;
 public class MemberRepository {
 
     private final DataSource dataSource;
-    private static final String MEMBER_COLUMNS =
-            "id, first_name, last_name, birth_date, gender, address, " +
-                    "profession, phone, email, occupation, joined_at, coop_id";
+    private static final String MEMBER_COLUMNS = "id, first_name, last_name, birth_date, gender, address, profession, phone, email, occupation, joined_at, coop_id";
 
     public Optional<Member> findById(String id) throws SQLException {
         String sql = "SELECT " + MEMBER_COLUMNS + " FROM agricultural_federation_db.member WHERE id = ?";
