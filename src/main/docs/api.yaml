@@ -7,7 +7,8 @@ info:
     - v0.0.1 (2026-04-21) : POST /collectivities for collectivities creation and POST /members for members creation.
     - v0.0.2 (2026-04-22) : PUT /collectivities/{id}/informations for collectivity information update.
     - v0.0.3 (2026-04-23) : New features about membership fees, collectivities transactions and its financial accounts, and members payments.
-  version: 0.0.1
+    - v0.0.4 (2026-04-23) : GET /collectivities/{id} for collectivity details and GET /collectivities/{id}/financialAccounts for financial accounts balance.
+  version: 0.0.4
 servers:
   - url: 'https://localhost:8080'
 paths:
@@ -146,6 +147,53 @@ paths:
           description: Provided query parameters occur some exceptions.
         404:
           description: Collectivity not found.
+  '/collectivities/{id}':
+    get:
+      summary: Retrieve collectivity with given ID
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+      responses:
+        200:
+          description: Collectivity with given ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectivityDetails'
+        404:
+          description: Collectivity not found.
+  '/collectivities/{id}/financialAccounts':
+    get:
+      summary: Retrieve collectivity financial accounts with balances
+      description: |
+        The `at` query parameter allows to retrieve accounts balance at a given date.
+        If omitted, current balances are returned.
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+        - in: query
+          name: at
+          schema:
+            type: string
+            format: date
+          required: false
+      responses:
+        200:
+          description: List of collectivity financial accounts with balances
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FinancialAccountBalance'
+        404:
+          description: Collectivity not found.
   '/members':
     post:
       summary: Create list of members
@@ -260,6 +308,37 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Member'
+    CollectivityDetails:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        number:
+          type: int
+        specialty:
+          type: string
+        creationDate:
+          type: string
+          format: date
+        location:
+          type: string
+        status:
+          $ref: '#/components/schemas/ActivityStatus'
+    FinancialAccountBalance:
+      type: object
+      properties:
+        id:
+          type: string
+        accountType:
+          type: string
+          enum:
+            - CASH
+            - MOBILE_MONEY
+            - BANK
+        balance:
+          type: number
     MemberIdentifier:
       type: string
     CreateMember:
