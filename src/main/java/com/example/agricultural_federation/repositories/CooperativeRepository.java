@@ -69,7 +69,20 @@ public Cooperative save(Cooperative cooperative, List<Member> members) {
     }
 
     public Cooperative findById(String id) {
-        String sql = "SELECT id, name, number, specialty, location, creation_date, federation_auth FROM agricultural_federation_app.cooperative WHERE id = ?";
+        String sql = """
+        SELECT 
+            id, 
+            name, 
+            number, 
+            specialty, 
+            location, 
+            creation_date, 
+            status, 
+            federation_auth 
+        FROM 
+            agricultural_federation_app.cooperative 
+        WHERE id = ?
+        """;
         try (Connection connection = dataSource.getConnection();
                 PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setObject(1, UUID.fromString(id));
@@ -82,6 +95,8 @@ public Cooperative save(Cooperative cooperative, List<Member> members) {
                 cooperative.setSpecialty(rs.getString("specialty"));
                 cooperative.setLocation(rs.getString("location"));
                 cooperative.setFederationApproval(rs.getBoolean("federation_auth"));
+                cooperative.setCreationDate(rs.getObject("creation_date", java.time.LocalDate.class));
+                cooperative.setStatus(rs.getString("status"));
                 return cooperative;
             }
             return null;

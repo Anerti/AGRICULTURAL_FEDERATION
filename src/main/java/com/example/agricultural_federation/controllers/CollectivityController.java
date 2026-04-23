@@ -38,6 +38,12 @@ public class CollectivityController {
         return ResponseEntity.ok(collectivity);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<CollectivityDetailsDto> getCollectivity(@PathVariable String id) {
+        CollectivityDetailsDto collectivity = collectivityService.getCollectivityById(id);
+        return ResponseEntity.ok(collectivity);
+    }
+
     @PostMapping("/{collectivityId}/identifiers")
     public ResponseEntity<CollectivityDto> assignIdentifiers(
             @PathVariable String collectivityId,

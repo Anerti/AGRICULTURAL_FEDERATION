@@ -1,6 +1,7 @@
 package com.example.agricultural_federation.services;
 
 import com.example.agricultural_federation.repositories.MemberRepository;
+import com.example.agricultural_federation.dto.CollectivityDetailsDto;
 import com.example.agricultural_federation.dto.CollectivityDto;
 import com.example.agricultural_federation.dto.CollectivityInformationDto;
 import com.example.agricultural_federation.dto.CollectivityStructureDto;
@@ -161,6 +162,24 @@ public class CollectivityService {
         dto.setName(updated.getName());
         dto.setLocation(updated.getLocation());
         dto.setSpecialty(updated.getSpecialty());
+
+        return dto;
+    }
+
+    public CollectivityDetailsDto getCollectivityById(String id) {
+        Cooperative cooperative = cooperativeRepository.findById(id);
+        if (cooperative == null) {
+            throw new NotFoundException("Collectivity not found");
+        }
+
+        CollectivityDetailsDto dto = new CollectivityDetailsDto();
+        dto.setId(cooperative.getId());
+        dto.setName(cooperative.getName());
+        dto.setNumber(cooperative.getNumber());
+        dto.setSpecialty(cooperative.getSpecialty());
+        dto.setCreationDate(cooperative.getCreationDate());
+        dto.setLocation(cooperative.getLocation());
+        dto.setStatus(cooperative.getStatus());
 
         return dto;
     }
